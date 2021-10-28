@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 import static com.ics.icsoauth2server.helper.ConstraintValidationMessage.*;
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "users")
 @Table(name = "users")
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
 
 
     @Id
@@ -109,10 +110,10 @@ public class User extends BaseEntity implements UserDetails {
     @JoinTable(
             name = "role_user",
             joinColumns = {
-                    @JoinColumn(name = "role_id", referencedColumnName = "id")
+                    @JoinColumn(name = "user_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "user_id", referencedColumnName = "id")
+                    @JoinColumn(name = "role_id", referencedColumnName = "id")
             })
     private Set<Roles> roles;
 
@@ -128,6 +129,8 @@ public class User extends BaseEntity implements UserDetails {
 
     public User(String uuid,String firstName, String lastName, String username, String emailId, String password){
         this.uuid = uuid;
+        this.setUpdatedDate(new Date());
+        this.setCreatedDate(new Date());
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -215,12 +218,10 @@ public class User extends BaseEntity implements UserDetails {
         this.authorities = authorities;
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -233,12 +234,10 @@ public class User extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
 
-    @Override
     public boolean isAccountNonExpired() {
         return !accountNonExpired;
     }
@@ -251,12 +250,10 @@ public class User extends BaseEntity implements UserDetails {
         this.accountNonExpired = accountNonExpired;
     }
 
-    @Override
     public boolean isAccountNonLocked() {
         return !accountNonLocked;
     }
 
-    @Override
     public boolean isCredentialsNonExpired() {
         return !credentialsNonExpired;
     }
@@ -265,7 +262,6 @@ public class User extends BaseEntity implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
     }
@@ -273,5 +269,7 @@ public class User extends BaseEntity implements UserDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+
 
 }

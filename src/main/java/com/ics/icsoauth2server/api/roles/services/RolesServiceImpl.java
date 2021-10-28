@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.IdGenerator;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +20,7 @@ public class RolesServiceImpl implements RolesService{
     private final RolesRepository rolesRepository;
     private final IdGenerator idGenerator;
     private final PermissionRepository permissionRepository;
+    private Set<Roles> roles;
 
 //    @PostConstruct
 //    private void postConstruct() {
@@ -43,6 +42,12 @@ public class RolesServiceImpl implements RolesService{
 //        rolesRepository.save(roles);
 ////
 //    }
+
+    @PostConstruct
+    public void postConstruct(){
+        System.out.println(rolesRepository.findById(1L));
+        System.out.println(rolesRepository.findAll());
+    }
 
     @Override
     public Roles addNewRole(RolesRequest request) {
@@ -67,5 +72,15 @@ public class RolesServiceImpl implements RolesService{
     @Override
     public List<Roles> listRoles() {
         return rolesRepository.findAll();
+    }
+
+    @Override
+    public Set<Roles> getUserRolesById(Long id) {
+        roles = new HashSet<>();
+        Optional<Roles> role  = rolesRepository.findById(id);
+        if(role.isPresent()){
+            roles.add(role.get());
+        }
+        return roles;
     }
 }

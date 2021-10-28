@@ -33,6 +33,10 @@ public class Roles {
     @Column(name = "description")
     private String description;
 
+    public Set<Permissions> getPermissions() {
+        return permissions;
+    }
+
     @ManyToMany(fetch = EAGER,cascade = ALL)
     @JoinTable(
             name = "permission_role",

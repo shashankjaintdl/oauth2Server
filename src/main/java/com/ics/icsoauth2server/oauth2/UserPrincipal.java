@@ -4,6 +4,7 @@ package com.ics.icsoauth2server.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ics.icsoauth2server.domain.User;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AccountExpiredException;
@@ -19,12 +20,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@NoArgsConstructor
 public class UserPrincipal implements UserDetails {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipal.class);
 
-    private String  id;
+    private Long  id;
     private String email;
     private String username;
     @JsonIgnore
@@ -32,7 +34,8 @@ public class UserPrincipal implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 //    private  Map<String, Object> attributes;
 
-    public UserPrincipal(String id,
+
+    public UserPrincipal(Long id,
                          String email,
                          String username,
                          String password,
@@ -54,7 +57,7 @@ public class UserPrincipal implements UserDetails {
         });
 
         return new UserPrincipal(
-                user.getUuid(),
+                user.getId(),
                 user.getEmailId(),
                 user.getUsername(),
                 user.getPassword(),
@@ -88,7 +91,7 @@ public class UserPrincipal implements UserDetails {
         }
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

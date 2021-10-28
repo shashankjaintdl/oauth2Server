@@ -85,6 +85,11 @@ public @Data class APIResponse<T> {
 //        HelperExtension.Print(toString());
     }
 
+    public APIResponse(Integer statusCode, String status , String message, @Nullable List<T> object, @Nullable HttpServletRequest httpServletRequest,Collection<StackTraceElement> stackTraceElement) {
+          this(statusCode,status,message,object,httpServletRequest);
+          this.stackTraceElement = stackTraceElement;
+//        HelperExtension.Print(toString());
+    }
     public APIResponse(Integer statusCode, String status , String message, @Nullable List<T> object, Integer totalItems, @Nullable HttpServletRequest httpServletRequest) {
         this(statusCode,status,message,object,httpServletRequest);
         this.totalItems = totalItems;

@@ -19,6 +19,7 @@ public class PermissionServiceImpl implements PermissionService{
     @PostConstruct
     public void postConstruct(){
 
+        System.out.println(permissionRepository.findAll());
     }
 
     @Override

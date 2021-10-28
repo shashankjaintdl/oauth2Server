@@ -25,12 +25,13 @@ public class UsernamePasswordAuthenticationTokenProvider implements Authenticati
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         final String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
+
         if(LOGGER.isDebugEnabled()){
             LOGGER.debug("Authenticating the username "+username);
         }
         UserPrincipal userPrincipal = null;
         try {
-           userPrincipal = userDetailsService.loadUserByUsername(username);
+           userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
         }
         catch (UsernameNotFoundException exception){
             throw new BadCredentialsException("Username does not exist");
@@ -38,10 +39,11 @@ public class UsernamePasswordAuthenticationTokenProvider implements Authenticati
         return createSuccessfulAuthentication(authentication,userPrincipal);
     }
 
-    private Authentication createSuccessfulAuthentication(final Authentication authentication, final UserPrincipal user) {
+    private Authentication createSuccessfulAuthentication(final Authentication authentication, UserPrincipal userPrincipal) {
         UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(user ,authentication.getCredentials(), user.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userPrincipal ,authentication.getCredentials(), userPrincipal.getAuthorities());
         token.setDetails(authentication.getDetails());
+        token.setDetails(userPrincipal.getId());
         return token;
     }
 

@@ -7,11 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.log.LogMessage;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+import javax.transaction.Transactional;
+
+@Service(value = "userDetailsService")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -20,17 +23,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         if(LOGGER.isDebugEnabled()){
             LOGGER.debug(String.valueOf(LogMessage.of(()->"[Searching "+username+" username from database]")));
         }
+
 
         User user = userRepository
                 .findByUsername(username)
                 .orElseThrow(
                         ()->new UsernameNotFoundException("Username does not exist")
                 );
+
 
         UserPrincipal.check(user);
 

@@ -1,4 +1,4 @@
-package com.ics.icsoauth2server.api.user.exception;
+package com.ics.icsoauth2server.exception;
 
 import net.jcip.annotations.Immutable;
 

@@ -56,17 +56,17 @@ public class DataSourceDevConfig {
     }
 
 
-    @Bean
-    @Primary
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LOGGER.info("Creating LocalContainerEntityManagerFactory bean..");
-        final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[]{"com.ics.icsoauth2server.domain"});
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        em.setJpaProperties(additionalProperties());
-        return em;
-    }
+        @Bean
+        @Primary
+        public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+            LOGGER.info("Creating LocalContainerEntityManagerFactory bean..");
+            final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+            em.setDataSource(dataSource());
+            em.setPackagesToScan(new String[]{"com.ics.icsoauth2server.domain"});
+            em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+            em.setJpaProperties(additionalProperties());
+            return em;
+        }
 
     @Bean
     @Primary()

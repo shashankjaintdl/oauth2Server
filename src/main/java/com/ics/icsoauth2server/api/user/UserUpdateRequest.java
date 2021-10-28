@@ -1,8 +1,15 @@
 package com.ics.icsoauth2server.api.user;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.ics.icsoauth2server.api.user.mapper.UserMapper;
 
-public class UserUpdateRequest extends UserMapper {
+import lombok.Data;
 
+import java.io.Serializable;
+
+public @Data class UserUpdateRequest implements Serializable {
+
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String emailId;
+    private String profilePic;
 }
