@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-public class UserRegistrationRequest extends UserMapper implements Serializable {
+public class UserRegistrationRequest implements Serializable {
 
     private String username;
     private String emailId;

@@ -3,6 +3,7 @@ package com.ics.icsoauth2server.http;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -56,10 +57,10 @@ public @Data class APIResponse<T> {
     }
 
 
-    public APIResponse(Integer statusCode, String status, String message, @Nullable List<T> object, Integer totalItems) {
-        this(statusCode, status, message, object);
-        this.totalItems = totalItems;
-    }
+//    public APIResponse(Integer statusCode, HttpStatus status, String message, @Nullable List object, HttpServletRequest totalItems) {
+//        this(statusCode, status, message, object);
+//        this.totalItems = totalItems;
+//    }
 
 
     /***
