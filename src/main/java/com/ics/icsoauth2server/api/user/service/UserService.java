@@ -14,7 +14,8 @@ public interface UserService {
 
     ResponseEntity<APIResponse<UserRegisterResponse>> addUser(UserRegistrationRequest request, Long id,HttpServletRequest httpServletRequest) throws URISyntaxException;
 
-    ResponseEntity<APIResponse<UserRegisterResponse>> updateUser(UserUpdateRequest request, UserPrincipal userPrincipal, HttpServletRequest httpServletRequest) throws URISyntaxException;
+    ResponseEntity<APIResponse<UserRegisterResponse>> updateUserProfile(UserUpdateRequest request, UserPrincipal userPrincipal, HttpServletRequest httpServletRequest) throws URISyntaxException;
+
 
     boolean userExistByUsername(String username);
 

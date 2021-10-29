@@ -1,5 +1,7 @@
 package com.ics.icsoauth2server.exception.handler;
 
+import com.ics.icsoauth2server.exception.InternalServerException;
+import com.ics.icsoauth2server.exception.UnauthorizedUserException;
 import com.ics.icsoauth2server.exception.UserExistException;
 import com.ics.icsoauth2server.http.APIResponse;
 import org.slf4j.Logger;
@@ -13,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
-import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class RestResponseExceptionHandler {
@@ -34,5 +36,26 @@ public class RestResponseExceptionHandler {
     }
 
 
+    @ExceptionHandler(value = {UnauthorizedUserException.class})
+    protected ResponseEntity<Object> handleUnauthorizedUserException(RuntimeException ex, HttpServletRequest request){
+        list = new ArrayList<>();
+        list.add(ex.getMessage());
+        apiResponse = new APIResponse<Object>(FORBIDDEN.value(), FORBIDDEN.toString(),ex.getMessage(), EMPTY_LIST,request, Arrays.asList(ex.getStackTrace()).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("{}",ex);
+        return ResponseEntity
+                .status(apiResponse.getStatusCode())
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = {InternalServerException.class})
+    protected ResponseEntity<Object> handleInternalException(RuntimeException ex, HttpServletRequest request){
+        list = new ArrayList<>();
+        list.add(ex.getMessage());
+        apiResponse = new APIResponse<Object>(INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR.toString(),ex.getMessage(), EMPTY_LIST,request, Arrays.asList(ex.getStackTrace()).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("{}",ex);
+        return ResponseEntity
+                .status(apiResponse.getStatusCode())
+                .body(apiResponse);
+    }
 
 }

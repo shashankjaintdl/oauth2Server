@@ -1,5 +1,6 @@
 package com.ics.icsoauth2server.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ics.icsoauth2server.domain.Roles;
 import lombok.Data;
 

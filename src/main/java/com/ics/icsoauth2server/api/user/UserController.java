@@ -1,6 +1,8 @@
 package com.ics.icsoauth2server.api.user;
 
 import com.ics.icsoauth2server.api.user.service.UserService;
+import com.ics.icsoauth2server.exception.UnauthorizedUserException;
+import com.ics.icsoauth2server.helper.ConstantExceptionMessage;
 import com.ics.icsoauth2server.http.APIResponse;
 import com.ics.icsoauth2server.oauth2.UserPrincipal;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URISyntaxException;
 
+import static com.ics.icsoauth2server.helper.ConstantExceptionMessage.*;
 import static com.ics.icsoauth2server.security.config.Roles.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -52,8 +55,10 @@ public class UserController {
                                                                            UserPrincipal userPrincipal,
                                                                            HttpServletRequest httpServletRequest) throws URISyntaxException {
         if(!userPrincipal.getUsername().equalsIgnoreCase(username)){
-            throw new IllegalStateException("Not Authorized");
+            throw new UnauthorizedUserException(FORBIDDEN);
         }
-        return userService.updateUser(userUpdateRequest,userPrincipal,httpServletRequest);
+        return userService.updateUserProfile(userUpdateRequest,userPrincipal,httpServletRequest);
     }
+
+
 }

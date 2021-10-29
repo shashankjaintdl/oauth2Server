@@ -4,6 +4,7 @@ import com.ics.icsoauth2server.api.roles.services.RolesService;
 import com.ics.icsoauth2server.api.user.UserRegistrationRequest;
 import com.ics.icsoauth2server.api.user.UserRegisterResponse;
 import com.ics.icsoauth2server.api.user.UserUpdateRequest;
+import com.ics.icsoauth2server.exception.InternalServerException;
 import com.ics.icsoauth2server.exception.UserExistException;
 import com.ics.icsoauth2server.api.user.mapper.UserMapper;
 import com.ics.icsoauth2server.api.user.repository.UserRepository;
@@ -16,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.IdGenerator;
@@ -49,20 +49,20 @@ public class UserServiceImpl implements UserService{
         userExist(request);
        list = new ArrayList<>();
         User user = new User(
-                idGenerator.generateId().toString(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getUsername(),
-                request.getEmailId(),
-                passwordEncoder.encode(request.getPassword()),
-                rolesService.getUserRolesById(roleId) // Assigning User Roles
-                );
+                    idGenerator.generateId().toString(),
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getUsername(),
+                    request.getEmailId(),
+                    passwordEncoder.encode(request.getPassword()),
+                    rolesService.getUserRolesById(roleId) // Assigning User Roles
+                    );
         try {
             userRepository.save(user);
             list.add(mapper.userRegisterResponseMap(user));
         }
         catch (Exception e){
-            throw new IllegalStateException(ConstantMessage.USER_CREATION_ERROR);
+            throw new InternalServerException(ConstantMessage.USER_CREATION_ERROR);
         }
         apiResponse = new APIResponse(
                 HttpStatus.CREATED.value(),
@@ -71,13 +71,12 @@ public class UserServiceImpl implements UserService{
                 list,
                 httpServletRequest);
         return ResponseEntity
-                .created(new URI(apiResponse.getPath()))
-                .body(apiResponse);
+                .created(new URI(apiResponse.getPath())).body(apiResponse);
     }
 
 
     @Override
-    public ResponseEntity<APIResponse<UserRegisterResponse>> updateUser(UserUpdateRequest request,
+    public ResponseEntity<APIResponse<UserRegisterResponse>> updateUserProfile(UserUpdateRequest request,
                                                                         UserPrincipal userPrincipal,
                                                                         HttpServletRequest httpServletRequest) throws URISyntaxException {
         list = new ArrayList<>();
@@ -107,7 +106,7 @@ public class UserServiceImpl implements UserService{
         }
 
         catch (Exception e){
-            throw new IllegalStateException("Update exception");
+            throw new InternalServerException("User update exception");
         }
 
         apiResponse = new APIResponse(
@@ -118,8 +117,7 @@ public class UserServiceImpl implements UserService{
                 httpServletRequest);
 
         return ResponseEntity
-                .status(apiResponse.getStatusCode())
-                .body(apiResponse);
+                .status(apiResponse.getStatusCode()).body(apiResponse);
     }
 
 
@@ -153,11 +151,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void userNotExist(UserRegistrationRequest request) {
-        if(userExistByUsername(request.getUsername())){
+        if(!userExistByUsername(request.getUsername())){
             LOGGER.info("User already exist by username");
             throw new UserExistException(ConstantMessage.USER_USERNAME_EXIST);
         }
-        if(userExistByEmailId(request.getEmailId())){
+        if(!userExistByEmailId(request.getEmailId())){
             LOGGER.info("User already exist by email id");
             throw new UserExistException(ConstantMessage.USER_EMAIL_EXIST);
         }

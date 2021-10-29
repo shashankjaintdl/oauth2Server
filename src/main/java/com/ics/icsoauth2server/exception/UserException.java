@@ -3,7 +3,7 @@ package com.ics.icsoauth2server.exception;
 import net.jcip.annotations.Immutable;
 
 @Immutable
-public class UserException extends RuntimeException{
+public class UserException extends ICSException{
 
     public UserException(){}
 

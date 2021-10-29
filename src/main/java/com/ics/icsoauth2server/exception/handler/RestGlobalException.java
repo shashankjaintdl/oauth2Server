@@ -7,4 +7,5 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestGlobalException extends ResponseEntityExceptionHandler {
 
 
+
 }
