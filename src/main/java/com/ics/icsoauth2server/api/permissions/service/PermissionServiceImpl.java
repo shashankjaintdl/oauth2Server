@@ -16,15 +16,9 @@ public class PermissionServiceImpl implements PermissionService{
     private final PermissionRepository permissionRepository;
     private final IdGenerator idGenerator;
 
-    @PostConstruct
-    public void postConstruct(){
-
-        System.out.println(permissionRepository.findAll());
-    }
 
     @Override
     public List<Permissions> getAllPermission() {
-
 
         return null;
     }

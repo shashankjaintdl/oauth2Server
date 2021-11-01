@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URISyntaxException;
 
 import static com.ics.icsoauth2server.helper.ConstantExceptionMessage.*;
@@ -50,7 +51,7 @@ public class UserController {
 
     @PreAuthorize("isAnonymous()")
     @PutMapping( "/profile/update/user/{username}")
-    public ResponseEntity<APIResponse<UserRegisterResponse>> updateProfile(@RequestBody UserUpdateRequest userUpdateRequest,
+    public ResponseEntity<APIResponse<UserRegisterResponse>> updateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest,
                                                                            @PathVariable(name = USERNAME) String username,
                                                                            UserPrincipal userPrincipal,
                                                                            HttpServletRequest httpServletRequest) throws URISyntaxException {
@@ -59,6 +60,7 @@ public class UserController {
         }
         return userService.updateUserProfile(userUpdateRequest,userPrincipal,httpServletRequest);
     }
+
 
 
 }
