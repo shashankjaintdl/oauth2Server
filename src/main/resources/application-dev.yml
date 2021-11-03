@@ -1,13 +1,13 @@
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-value:     -----BEGIN PUBLIC KEY-----
-        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm58x3bNXr/FGGh3gxw8a
-        uJ+aOmXGP4LiDAlE4SIr9wUVN9+eXjBt5UUGj39Z2CzNblPvEXlYWAeKLyTNvBbH
-        PV4/Z9LnKIeeAdwoH+Axnphwe/pthHSpDi35H6pTXaVNBYrr3o0QMqDybkYflfzY
-        1u/2eEHuDDGOr2iqjimZtCwa+b3BHf1ThBfl/Gh/dyhtXsIG6/dGrF1PekYgtRES
-        1GqviL7lch6ZjFPmMIxj4qYtmFgRRD9knxC6QC5CEvFu1tm4b/WZ3Jr2QU+Y2rNv
-        9EL3q0QvmaC3K0cVRSJ2+PZ2VSId1zWW3wv/VIBUpj+RI8KkrO1q5sbafWNW/Pt2
-        VQIDAQAB
-        -----END PUBLIC KEY-----
+#security:
+#  oauth2:
+#    resource:
+#      jwt:
+#        key-value:     -----BEGIN PUBLIC KEY-----
+#        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm58x3bNXr/FGGh3gxw8a
+#        uJ+aOmXGP4LiDAlE4SIr9wUVN9+eXjBt5UUGj39Z2CzNblPvEXlYWAeKLyTNvBbH
+#        PV4/Z9LnKIeeAdwoH+Axnphwe/pthHSpDi35H6pTXaVNBYrr3o0QMqDybkYflfzY
+#        1u/2eEHuDDGOr2iqjimZtCwa+b3BHf1ThBfl/Gh/dyhtXsIG6/dGrF1PekYgtRES
+#        1GqviL7lch6ZjFPmMIxj4qYtmFgRRD9knxC6QC5CEvFu1tm4b/WZ3Jr2QU+Y2rNv
+#        9EL3q0QvmaC3K0cVRSJ2+PZ2VSId1zWW3wv/VIBUpj+RI8KkrO1q5sbafWNW/Pt2
+#        VQIDAQAB
+#        -----END PUBLIC KEY-----

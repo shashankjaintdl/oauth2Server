@@ -1,14 +1,16 @@
 package com.ics.icsoauth2server.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity
-@Table(name = "pages_endpoint")
-public @Data class PageEndpoint {
+@Table(name = "page_group")
+public @Data class PageGroup {
 
     @Id
     @Column(name = "id")
@@ -20,23 +22,11 @@ public @Data class PageEndpoint {
     @NotEmpty(message = "UUID must not be empty")
     private String UUID;
 
-    @Column(name = "end_point",unique = true,updatable = false,nullable = false)
-    @NotEmpty(message = "Endpoint must not be empty!")
-    private String endPoint;
+    @Column(name = "group_name",unique = true,columnDefinition = "TEXT")
+    @NotEmpty(message = "Page group name must not be empty")
+    private String groupName;
 
-    @ManyToOne
-    private PageGroup pageGroup;
-
-    @ManyToOne
-    private User user;
-
-    @Column(name = "is_disabled")
-    private Boolean isDisabled;
-
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
-
-    @Column(name = "temp_disabled")
-    private Boolean isTempdisbled;
+    @OneToMany(mappedBy = "pageGroup",cascade = CascadeType.ALL)
+    private Set<PageEndpoint> pageEndpoints;
 
 }

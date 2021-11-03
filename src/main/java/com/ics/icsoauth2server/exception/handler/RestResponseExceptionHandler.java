@@ -1,5 +1,6 @@
 package com.ics.icsoauth2server.exception.handler;
 
+import com.ics.icsoauth2server.api.tag.exceptions.TagNotFoundExceptions;
 import com.ics.icsoauth2server.exception.InternalServerException;
 import com.ics.icsoauth2server.exception.UnauthorizedUserException;
 import com.ics.icsoauth2server.exception.UserExistException;
@@ -47,6 +48,17 @@ public class RestResponseExceptionHandler {
                 .body(apiResponse);
     }
 
+    @ExceptionHandler(value = {TagNotFoundExceptions.class})
+    protected ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex,HttpServletRequest request){
+        list = new ArrayList<>();
+        list.add(ex.getMessage());
+        apiResponse = new APIResponse<Object>(NOT_FOUND.value(), NOT_FOUND.toString(),ex.getMessage(), EMPTY_LIST,request, Arrays.asList(ex.getStackTrace()).stream().limit(10).collect(Collectors.toList()));
+        LOGGER.info("{}",ex);
+        return ResponseEntity
+                .status(apiResponse.getStatusCode())
+                .body(apiResponse);
+    }
+
     @ExceptionHandler(value = {InternalServerException.class})
     protected ResponseEntity<Object> handleInternalException(RuntimeException ex, HttpServletRequest request){
         list = new ArrayList<>();
@@ -57,5 +69,6 @@ public class RestResponseExceptionHandler {
                 .status(apiResponse.getStatusCode())
                 .body(apiResponse);
     }
+
 
 }

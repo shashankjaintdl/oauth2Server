@@ -74,9 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-//                .addFilterBefore(new CustomTokenEndpointFilter(authenticationManagerBean(),new DefaultOAuth2RequestFactory(clientDetailsService)), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-//                .antMatchers("/user/**").hasAnyRole("AD")
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/","/error").permitAll();
         }

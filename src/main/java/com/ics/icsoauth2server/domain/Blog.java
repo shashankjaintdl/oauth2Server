@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity(name = "blog")
 @Table(name = "blog")
@@ -24,8 +25,12 @@ public @Data class Blog extends BlogBaseEntity{
     private String question;
 
     @Lob
-    @Column(name = "answer",nullable = false)
+    @Column(name = "contents",nullable = false)
     @NotEmpty(message = "Answer must not be empty")
-    private String answer;
+    private String contents;
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
+    private Set<Tags> tags;
+
 
 }

@@ -1,13 +1,12 @@
-package com.ics.icsoauth2server.api.category;
+package com.ics.icsoauth2server.api.tag;
 
-import com.ics.icsoauth2server.helper.ConstantExceptionMessage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static com.ics.icsoauth2server.helper.ConstantExceptionMessage.*;
 
 @NoArgsConstructor
-public @Data class CategoryRequest {
+public @Data class TagRequest {
 
     private String UUID;
 
@@ -15,7 +14,7 @@ public @Data class CategoryRequest {
 
     private String description;
 
-    public CategoryRequest(String UUID, String categoryName,String description){
+    public TagRequest(String UUID, String categoryName, String description){
         if(categoryName.isEmpty()){
             throw new IllegalArgumentException(CATEGORY_NAME_EMPTY);
         }
