@@ -15,7 +15,7 @@ public @Data class BlogCreationRequest extends BlogBaseRequest{
     @NotNull(message = BLOG_TOPIC_NOT_NULL)
     @NotBlank(message = BLOG_TOPIC_NOT_BLANK)
     @NotEmpty(message = BLOG_TOPIC_NOT_EMPTY)
-    private String topic;
+    private String title;
 
     @NotNull(message = BLOG_CONTENT_NOT_NULL)
     @NotEmpty(message = BLOG_CONTENT_NOT_EMPTY)

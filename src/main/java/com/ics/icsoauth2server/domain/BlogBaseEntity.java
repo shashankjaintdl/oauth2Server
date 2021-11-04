@@ -26,6 +26,13 @@ public @Data class BlogBaseEntity {
     )
     private Date updatedDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(
+            name = "published_date",
+            length = 19
+    )
+    private Date publishedDate;
+
     @Column(name = "createdBy")
     private String createdBy;
 

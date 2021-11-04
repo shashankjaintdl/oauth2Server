@@ -9,9 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog,Long> {
-    Boolean existsByTopic(String topic);
-    Optional<Blog> findByTopic(String topic);
+    Boolean existsByTitle(String topic);
+    Optional<Blog> findByTitle(String topic);
+    Optional<Blog> findByTitleAndCreatedBy(String title,String username);
     List<Blog> findAllByCreatedByAndAndIsPublished(String username,Boolean isPublished);
-
-
 }

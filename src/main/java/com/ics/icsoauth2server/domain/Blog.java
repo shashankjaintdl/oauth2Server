@@ -1,11 +1,10 @@
 package com.ics.icsoauth2server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ics.icsoauth2server.helper.ConstantMessage;
-import com.ics.icsoauth2server.helper.ConstraintValidationMessage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -34,11 +33,11 @@ public @Data class Blog extends BlogBaseEntity{
     @NotBlank(message = UUID_NOT_BLANK)
     private String UUID;
 
-    @Column(name = "topic",nullable = false)
+    @Column(name = "title",nullable = false,updatable = false)
     @NotEmpty(message = BLOG_TOPIC_NOT_EMPTY)
     @NotNull(message = BLOG_TOPIC_NOT_NULL)
     @NotBlank(message = BLOG_TOPIC_NOT_BLANK)
-    private String topic;
+    private String title;
 
     @Lob
     @Column(name = "contents",nullable = false)
@@ -47,7 +46,8 @@ public @Data class Blog extends BlogBaseEntity{
     private String contents;
 
     @Column(name = "tags")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private Set<String> tags;
 
     @ManyToOne
@@ -61,17 +61,17 @@ public @Data class Blog extends BlogBaseEntity{
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    public Blog( String UUID,String topic, String contents,String username){
+    public Blog( String UUID,String title, String contents,String username){
         this.UUID = UUID;
-        this.topic = topic;
+        this.title = title;
         this.contents = contents;
         this.setCreatedDate(new Date());
         this.setUpdatedDate(new Date());
         this.setCreatedBy(username);
     }
 
-    public Blog( String UUID, String topic, String contents,String username, Set<String> tags,User user) {
-        this(UUID,topic,contents,username);
+    public Blog( String UUID, String title, String contents,String username, Set<String> tags,User user) {
+        this(UUID,title,contents,username);
         if(tags.isEmpty() || tags==null)
             throw new IllegalArgumentException("Tags must be provided");
         this.tags = tags;
