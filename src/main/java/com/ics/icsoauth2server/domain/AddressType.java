@@ -1,5 +1,6 @@
 package com.ics.icsoauth2server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,9 @@ public class AddressType {
     @Column(name = "address_description")
     private String addressDescription;
 
-    @OneToMany(mappedBy = "addressType",fetch = FetchType.EAGER)
-    Set<UserAddress> userAddress;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "addressType",fetch = FetchType.EAGER)
+//
+//    Set<UserAddress> userAddress;
 }
 

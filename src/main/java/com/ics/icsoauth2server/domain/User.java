@@ -1,5 +1,7 @@
 package com.ics.icsoauth2server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +17,7 @@ import java.util.Set;
 import static com.ics.icsoauth2server.helper.ConstraintValidationMessage.*;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity(name = "users")
 @Table(name = "users")
@@ -68,6 +71,7 @@ public class User extends BaseEntity {
             name = "password",
             nullable = false
     )
+    @JsonIgnore
     private String password;
 
     @Email(message = EMAIL_NOT_VALID)
@@ -118,9 +122,10 @@ public class User extends BaseEntity {
     private Set<Roles> roles;
 
     @OneToMany(
-            fetch = EAGER,
+            fetch = LAZY,
             mappedBy = "user"
     )
+    @JsonIgnoreProperties({"user"})
     private Set<UserAddress> userAddresses;
 
     @Transient

@@ -7,14 +7,16 @@ import com.ics.icsoauth2server.oauth2.UserPrincipal;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URISyntaxException;
 
 public interface BlogService {
 
-    ResponseEntity<APIResponse<BlogCreationResponse>> create(BlogCreationRequest request, HttpServletRequest httpServletRequest, UserPrincipal principal);
+    ResponseEntity<APIResponse<BlogCreationResponse>> createBlog(BlogCreationRequest request, HttpServletRequest httpServletRequest, UserPrincipal principal) throws URISyntaxException;
+
+    ResponseEntity<APIResponse<BlogCreationResponse>> publishBlog(Long id,HttpServletRequest httpServletRequest, UserPrincipal principal);
 
     Boolean existById(Long id, HttpServletRequest httpServletRequest);
 
-    Boolean existByQuestion(String question, HttpServletRequest httpServletRequest);
-
+    Boolean existByTopic(String question, HttpServletRequest httpServletRequest);
 
 }

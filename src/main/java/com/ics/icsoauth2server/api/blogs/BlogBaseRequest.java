@@ -7,5 +7,5 @@ import java.util.Date;
 public @Data class BlogBaseRequest {
     private Date createdDate;
     private Date updatedDate;
-    private String username;
+    private String createdBy;
 }

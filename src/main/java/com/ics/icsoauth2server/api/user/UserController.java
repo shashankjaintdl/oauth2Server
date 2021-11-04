@@ -1,5 +1,6 @@
 package com.ics.icsoauth2server.api.user;
 
+import com.ics.icsoauth2server.api.user.repository.UserRepository;
 import com.ics.icsoauth2server.api.user.service.UserService;
 import com.ics.icsoauth2server.exception.UnauthorizedUserException;
 import com.ics.icsoauth2server.helper.ConstantExceptionMessage;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import java.net.URISyntaxException;
 
 import static com.ics.icsoauth2server.helper.ConstantExceptionMessage.*;
+import static com.ics.icsoauth2server.helper.ConstantMessage.*;
 import static com.ics.icsoauth2server.security.config.Roles.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,13 +28,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 )
 public class UserController {
 
-    protected final static String ENDPOINT = "/account";
+    protected final static String ENDPOINT = API_VERSION+"/account";
     protected final static String USERNAME = "username";
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService){
+    public UserController(UserService userService,UserRepository userRepository){
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PreAuthorize("isAnonymous()")
@@ -61,6 +65,10 @@ public class UserController {
         return userService.updateUserProfile(userUpdateRequest,userPrincipal,httpServletRequest);
     }
 
+    @GetMapping()
+    public ResponseEntity<?> getUser(){
+        return ResponseEntity.ok(userRepository.findByUsername("sjaintdl"));
+    }
 
 
 }

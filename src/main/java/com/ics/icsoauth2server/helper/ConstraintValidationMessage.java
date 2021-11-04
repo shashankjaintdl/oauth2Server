@@ -21,4 +21,18 @@ public class ConstraintValidationMessage {
     public static final String PASSWORD_NOT_BLANK = "Password must not be blank";
     public static final String PASSWORD_NOT_VALID = "Password must not be valid";
 
+
+    public static final String UUID_NOT_EMPTY = "UUID must not be empty";
+    public static final String UUID_NOT_NULL  = "UUID must not be null";
+    public static final String UUID_NOT_BLANK = "UUID must not be blank";
+
+    public static final String BLOG_TOPIC_NOT_EMPTY = "Topic must not be empty";
+    public static final String BLOG_TOPIC_NOT_NULL = "Topic must not be null";
+    public static final String BLOG_TOPIC_NOT_BLANK = "Topic must not be blank";
+
+    public static final String BLOG_CONTENT_NOT_NULL = "Content must not be null";
+    public static final String BLOG_CONTENT_NOT_EMPTY = "Content must not be empty";
+
+
+
 }

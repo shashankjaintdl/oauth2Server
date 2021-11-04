@@ -1,5 +1,6 @@
 package com.ics.icsoauth2server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,10 @@ public class Address {
     private String streetType1;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
-
-    @OneToMany(mappedBy = "address",fetch = FetchType.EAGER)
-    private Set<UserAddress> userAddresses;
+//
+//    @OneToMany(mappedBy = "address",fetch = FetchType.EAGER)
+//    private Set<UserAddress> userAddresses;
 
 }

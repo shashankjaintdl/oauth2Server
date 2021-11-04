@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ics.icsoauth2server.helper.ConstantMessage.*;
 import static org.springframework.http.MediaType.*;
 
 @RestController
@@ -19,7 +20,7 @@ import static org.springframework.http.MediaType.*;
 )
 public class TagController {
 
-    protected final static String ENDPOINT = "/tags";
+    protected final static String ENDPOINT = API_VERSION+"/tags";
 
     private final TagService tagService;
 

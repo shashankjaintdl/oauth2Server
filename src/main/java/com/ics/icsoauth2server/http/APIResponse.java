@@ -144,6 +144,12 @@ public @Data class APIResponse<T> {
 //        HelperExtension.Print(toString());
     }
 
+    public APIResponse(Integer statusCode, String status , String message, @Nullable List<T> object, @Nullable WebRequest webRequest,@Nullable Collection<StackTraceElement> stackTraceElement) {
+        this(statusCode,status,message,object,webRequest);
+        this.stackTraceElement  = stackTraceElement;
+//        HelperExtension.Print(toString());
+    }
+
     public APIResponse(Integer statusCode, String status , String message, @Nullable List<T> object, Integer totalItems, @Nullable WebRequest webRequest) {
         this(statusCode,status,message,object,webRequest);
         this.totalItems = totalItems;
@@ -158,6 +164,7 @@ public @Data class APIResponse<T> {
         this(statusCode,status,message,object,totalItems,stackTraceElement,webRequest);
         this.noOfPage = noOfPage;
     }
+
 
     public APIResponse(Integer statusCode, String status , String message, @Nullable Collection<StackTraceElement> stackTraceElement, @Nullable WebRequest webRequest) {
         this(webRequest);
