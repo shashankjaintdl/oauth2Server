@@ -5,8 +5,6 @@ import com.ics.icsoauth2server.domain.Blog;
 
 public class BlogMapper {
 
-
-
     public BlogCreationResponse mapResponse(Blog blog){
         BlogCreationResponse response = new BlogCreationResponse();
         response.setId(blog.getId());
@@ -22,4 +20,5 @@ public class BlogMapper {
         response.setTags(blog.getTags());
         return response;
     }
+
 }

@@ -18,6 +18,9 @@ public interface BlogService {
 
     ResponseEntity<APIResponse<BlogCreationResponse>> editPost(BlogUpdateRequest request, HttpServletRequest httpServletRequest, UserPrincipal principal);
 
+    ResponseEntity<APIResponse<BlogCreationResponse>> deletePost(String title, HttpServletRequest httpServletRequest, UserPrincipal principal);
+
+
     Boolean existById(Long id, HttpServletRequest httpServletRequest);
 
     Boolean existByTopic(String question, HttpServletRequest httpServletRequest);

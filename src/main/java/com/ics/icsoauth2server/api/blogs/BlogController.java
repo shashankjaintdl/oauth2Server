@@ -54,9 +54,17 @@ public class BlogController {
         return blogService.editPost(request,httpServletRequest,principal);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/delete/{title}")
+    public ResponseEntity<APIResponse<BlogCreationResponse>> delete(@PathVariable(name = "title") String title,
+                                                                    HttpServletRequest httpServletRequest,
+                                                                    UserPrincipal principal){
+        return blogService.deletePost(title,httpServletRequest,principal);
+    }
+
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{topic}")
+    @GetMapping("/{title}")
     public ResponseEntity<APIResponse<BlogCreationResponse>> getUnPublishPost(@PathVariable(name = "title") String title,
                                                                                HttpServletRequest httpServletRequest){
         return null;

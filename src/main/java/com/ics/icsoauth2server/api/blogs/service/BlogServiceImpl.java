@@ -39,9 +39,7 @@ public class BlogServiceImpl  implements BlogService{
     private final IdGenerator idGenerator;
 
     private BlogMapper mapper = new BlogMapper();
-
     private APIResponse<BlogCreationResponse> apiResponse;
-
     private List<BlogCreationResponse> blogCreationResponses;
 
     @Override
@@ -209,6 +207,73 @@ public class BlogServiceImpl  implements BlogService{
         return ResponseEntity
                 .status(apiResponse.getStatusCode()).body(apiResponse);
     }
+
+    @Override
+    public ResponseEntity<APIResponse<BlogCreationResponse>> deletePost(String title,HttpServletRequest httpServletRequest,UserPrincipal principal) {
+
+        Optional<Blog> blog = blogRepository.findByTitle(title);
+        Blog entity = new Blog();
+
+        /**
+         * Checking if post exist in database
+         **/
+        if(!blog.isPresent()) {
+            LOGGER.info(POST_NOT_EXIST+" with title ==> {}",title);
+            throw new BlogNotFoundException(POST_NOT_EXIST);
+        }
+
+        /**
+         * Checking if post deleted
+         **/
+        if(blog.get().getIsDeleted()){
+            LOGGER.info(POST_ALREADY_DELETED+"with title ==> {}",title);
+            throw new BlogNotFoundException(POST_ALREADY_DELETED);
+        }
+
+        /**
+         * Admin can delete owner post
+         **/
+        if(principal.getAuthorities().stream().anyMatch(x->x.getAuthority().contains("ROLE_AD"))){
+            LOGGER.info("Post deleting by Admin with title ==> {}",blog.get().getTitle());
+            entity = deletePost(blog.get());
+        }
+
+        /**
+         * Post owner deleting the post
+         **/
+        else if(principal.getUsername().equals(blog.get().getCreatedBy())){
+            LOGGER.info("Post deleting by user [ "+principal.getUsername()+" ] with title ==> {}",blog.get().getTitle());
+            entity = deletePost(blog.get());
+        }
+
+        blogCreationResponses = new ArrayList<>();
+
+        blogCreationResponses.add(mapper.mapResponse(entity));
+
+        apiResponse = new APIResponse<>(
+                OK.value(),
+                OK.toString(),
+                POST_DELETED_SUCCESS,
+                blogCreationResponses,
+                httpServletRequest
+        );
+        return ResponseEntity
+                .status(apiResponse.getStatusCode()).body(apiResponse);
+    }
+
+    protected Blog deletePost(Blog blog){
+        try {
+            blog.setIsDeleted(true);
+            blog.setIsPublished(false);
+            blogRepository.save(blog);
+            LOGGER.info(POST_DELETED_SUCCESS);
+        }
+        catch (Exception ex){
+            throw new InternalServerException(POST_DELETION_ERROR);
+        }
+        return blog;
+    }
+
 
     @Override
     public Boolean existById(Long id, HttpServletRequest httpServletRequest) {

@@ -20,12 +20,12 @@ public class ConstantMessage {
     public static final String POST_SAVE_SUCCESS = "Post saved successfully";
     public static final String BLOG_EXIST_BY_ID = "Blog already exist by id";
     public static final String BLOG_EXIST_BY_TOPIC = "Blog already exist by topic";
-    public static final String POST_DELETED_SUCCESS = "Blog deleted successfully";
+    public static final String POST_DELETED_SUCCESS = "Post deleted successfully";
     public static final String POST_NOT_EXIST = "Post does not exist in our database";
     public static final String POST_ALREADY_DELETED = "Post already deleted from the database";
     public static final String POST_CREATED_SUCCESS = "POST created Successfully";
     public static final String BLOG_CREATION_ERROR = "Error while creating or saving the blog";
-    public static final String BLOG_DELETION_ERROR = "Error while deleting the blog";
+    public static final String POST_DELETION_ERROR = "Error while deleting the post";
     public static final String BLOG_PUBLISH_SUCCESS = "Blog published successfully";
     public static final String BLOG_PUBLISH_ERROR = "Error while publishing the blog";
     public static final String POST_UPDATE_SUCCESS = "POST updated success";
