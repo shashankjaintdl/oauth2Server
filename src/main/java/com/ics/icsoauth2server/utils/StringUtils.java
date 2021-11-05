@@ -24,6 +24,10 @@ public final class StringUtils {
 
 
 
+	public static String replaceSpaceWithUnderScore(String s){
+		String str = s.replaceAll("\\s+","_");
+		return str;
+	}
 
 	private StringUtils() {}
 }

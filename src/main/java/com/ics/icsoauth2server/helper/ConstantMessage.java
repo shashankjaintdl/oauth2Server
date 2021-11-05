@@ -32,4 +32,5 @@ public class ConstantMessage {
     public static final String POST_UPDATE_ERROR = "Error while updating the POST";
     public static final String POST_PUBLISH_SUCCESS = "Post published successfully";
     public static final String POST_PUBLISH_ERROR = "Error while publishing the post";
+    public static final String POST_SUCCESS_FETCH = "Successfully Fetched";
 }

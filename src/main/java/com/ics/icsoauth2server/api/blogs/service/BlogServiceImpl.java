@@ -10,8 +10,11 @@ import com.ics.icsoauth2server.api.blogs.repository.BlogRepository;
 import com.ics.icsoauth2server.api.user.repository.UserRepository;
 import com.ics.icsoauth2server.domain.Blog;
 import com.ics.icsoauth2server.exception.InternalServerException;
+import com.ics.icsoauth2server.exception.PermissionDeniedException;
 import com.ics.icsoauth2server.http.APIResponse;
 import com.ics.icsoauth2server.oauth2.UserPrincipal;
+import com.ics.icsoauth2server.utils.RolePermissionUtils;
+import com.ics.icsoauth2server.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import static com.ics.icsoauth2server.helper.ConstantExceptionMessage.*;
 import static com.ics.icsoauth2server.helper.ConstantMessage.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -51,9 +55,10 @@ public class BlogServiceImpl  implements BlogService{
             throw new BlogAlreadyExistException(POST_ALREADY_EXIST);
         }
 
+
         Blog blog = new Blog(
                 idGenerator.generateId().toString(),
-                request.getTitle(),
+                StringUtils.replaceSpaceWithUnderScore(request.getTitle()),
                 request.getContent(),
                 principal.getUsername(),
                 request.getTags(),
@@ -68,10 +73,10 @@ public class BlogServiceImpl  implements BlogService{
             LOGGER.info("Saving the post in database with title ==> {}",request.getTitle());
 
             blogRepository.save(blog);
-
-            blogCreationResponses = new ArrayList<>();
-
-            blogCreationResponses.add(mapper.mapResponse(blog));
+//
+//            blogCreationResponses = new ArrayList<>();
+//
+//            blogCreationResponses.add(mapper.mapResponse(blog));
 
             LOGGER.info(POST_CREATED_SUCCESS+" with title ==> {}",blog.getTitle());
 
@@ -79,7 +84,7 @@ public class BlogServiceImpl  implements BlogService{
                     CREATED.value(),
                     CREATED.toString(),
                     POST_CREATED_SUCCESS,
-                    blogCreationResponses,
+                    createResponses(blog),
                     httpServletRequest
             );
         }
@@ -118,14 +123,11 @@ public class BlogServiceImpl  implements BlogService{
 
         blog.get().setPublishedDate(new Date());
 
-        blogCreationResponses = new ArrayList<>();
 
         try {
             LOGGER.info("Saving and publishing the post  in database ==> {}",blog.get().getTitle());
 
             blogRepository.save(blog.get());
-
-            blogCreationResponses.add(mapper.mapResponse(blog.get()));
 
             LOGGER.info(POST_PUBLISH_SUCCESS+" with title ==> {} ",blog.get().getTitle());
 
@@ -133,7 +135,7 @@ public class BlogServiceImpl  implements BlogService{
                     OK.value(),
                     OK.toString(),
                     POST_PUBLISH_SUCCESS,
-                    blogCreationResponses,
+                    createResponses(blog.get()),
                     httpServletRequest
             );
         }
@@ -186,10 +188,6 @@ public class BlogServiceImpl  implements BlogService{
             LOGGER.info("Updating post in database with title ==> {}", request.getTitle());
 
             blogRepository.saveAndFlush(blog.get());
-
-            blogCreationResponses = new ArrayList<>();
-
-            blogCreationResponses.add(mapper.mapResponse(blog.get()));
         }
 
         catch (Exception ex){
@@ -200,7 +198,7 @@ public class BlogServiceImpl  implements BlogService{
                 OK.value(),
                 OK.toString(),
                 POST_UPDATE_SUCCESS,
-                blogCreationResponses,
+                createResponses(blog.get()),
                 httpServletRequest
         );
 
@@ -217,6 +215,7 @@ public class BlogServiceImpl  implements BlogService{
         /**
          * Checking if post exist in database
          **/
+
         if(!blog.isPresent()) {
             LOGGER.info(POST_NOT_EXIST+" with title ==> {}",title);
             throw new BlogNotFoundException(POST_NOT_EXIST);
@@ -231,34 +230,73 @@ public class BlogServiceImpl  implements BlogService{
         }
 
         /**
+         * Post owner deleting the post
+         **/
+
+        if(principal.getUsername().equals(blog.get().getCreatedBy()) && RolePermissionUtils.hasBlogDeletePermission(principal)){
+            LOGGER.info("Post deleting by user [ "+principal.getUsername()+" ] with title ==> {}",blog.get().getTitle());
+            entity = deletePost(blog.get());
+        }
+
+        /**
          * Admin can delete owner post
          **/
-        if(principal.getAuthorities().stream().anyMatch(x->x.getAuthority().contains("ROLE_AD"))){
+
+        else if(RolePermissionUtils.isAdmin(principal)){
             LOGGER.info("Post deleting by Admin with title ==> {}",blog.get().getTitle());
             entity = deletePost(blog.get());
         }
 
         /**
-         * Post owner deleting the post
+         * Denying permission for other users to perform delete operation
          **/
-        else if(principal.getUsername().equals(blog.get().getCreatedBy())){
-            LOGGER.info("Post deleting by user [ "+principal.getUsername()+" ] with title ==> {}",blog.get().getTitle());
-            entity = deletePost(blog.get());
+
+        else{
+            LOGGER.info("Permission denied to perform this operation to the user ==> {} ",principal.getUsername());
+            throw new PermissionDeniedException(PERMISSION_DENIED);
         }
-
-        blogCreationResponses = new ArrayList<>();
-
-        blogCreationResponses.add(mapper.mapResponse(entity));
 
         apiResponse = new APIResponse<>(
                 OK.value(),
                 OK.toString(),
                 POST_DELETED_SUCCESS,
-                blogCreationResponses,
+                createResponses(entity),
+                httpServletRequest
+        );
+
+        return ResponseEntity
+                .status(apiResponse.getStatusCode()).body(apiResponse);
+    }
+
+    @Override
+    public ResponseEntity<APIResponse<BlogCreationResponse>> getPublishedPostByTitle(String title, HttpServletRequest httpServletRequest) {
+
+        Optional<Blog> blog = blogRepository.findByTitleAndIsPublishedAndIsDeleted(title,true,false);
+
+        /**
+         * Checking if post exist in database
+         **/
+
+        if(!blog.isPresent()) {
+            LOGGER.info(POST_NOT_EXIST+" with title ==> {}",title);
+            throw new BlogNotFoundException(POST_NOT_EXIST);
+        }
+
+        apiResponse =  new APIResponse<>(
+                OK.value(),
+                OK.toString(),
+                POST_SUCCESS_FETCH,
+                createResponses(blog.get()),
                 httpServletRequest
         );
         return ResponseEntity
                 .status(apiResponse.getStatusCode()).body(apiResponse);
+    }
+
+    protected List<BlogCreationResponse> createResponses(Blog blog){
+        blogCreationResponses = new ArrayList<>();
+        blogCreationResponses.add(mapper.mapResponse(blog));
+        return blogCreationResponses;
     }
 
     protected Blog deletePost(Blog blog){
@@ -274,7 +312,6 @@ public class BlogServiceImpl  implements BlogService{
         return blog;
     }
 
-
     @Override
     public Boolean existById(Long id, HttpServletRequest httpServletRequest) {
         return blogRepository.existsById(id);
@@ -284,6 +321,8 @@ public class BlogServiceImpl  implements BlogService{
     public Boolean existByTopic(String title, HttpServletRequest httpServletRequest) {
        return blogRepository.existsByTitle(title);
     }
+
+
 
 
 }

@@ -66,10 +66,10 @@ public class BlogController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{title}")
     public ResponseEntity<APIResponse<BlogCreationResponse>> getUnPublishPost(@PathVariable(name = "title") String title,
-                                                                               HttpServletRequest httpServletRequest){
+                                                                               HttpServletRequest httpServletRequest,
+                                                                               UserPrincipal userPrincipal){
         return null;
     }
-
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/un-published/all")
@@ -78,10 +78,14 @@ public class BlogController {
         return null;
     }
 
+    /**
+     *  No authentication required to complete view or reading the post.
+     * */
 
-    @GetMapping("/published/{title}")
-    public ResponseEntity<?> getBlogById(@PathVariable(name = "title") String title){
-        return null;
+    @GetMapping("/published-post/{title}")
+    public ResponseEntity<APIResponse<BlogCreationResponse>> getPostByTitle(@PathVariable(name = "title") String title,
+                                                                         HttpServletRequest httpServletRequest){
+        return blogService.getPublishedPostByTitle(title,httpServletRequest);
     }
 
 

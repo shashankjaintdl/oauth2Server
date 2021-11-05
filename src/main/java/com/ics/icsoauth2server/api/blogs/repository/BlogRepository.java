@@ -17,4 +17,7 @@ public interface BlogRepository extends JpaRepository<Blog,Long> {
     Optional<Blog> findByTitleAndCreatedBy(String title,String username);
 
     List<Blog> findAllByCreatedByAndAndIsPublished(String username,Boolean isPublished);
+
+    Optional<Blog> findByTitleAndIsPublishedAndIsDeleted(String title,Boolean isPublished,Boolean isDeleted);
+
 }

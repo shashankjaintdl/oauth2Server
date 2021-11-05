@@ -2,6 +2,7 @@ package com.ics.icsoauth2server.exception.handler;
 
 import com.ics.icsoauth2server.api.tag.exceptions.TagNotFoundExceptions;
 import com.ics.icsoauth2server.exception.InternalServerException;
+import com.ics.icsoauth2server.exception.PermissionDeniedException;
 import com.ics.icsoauth2server.exception.UnauthorizedUserException;
 import com.ics.icsoauth2server.exception.UserExistException;
 import com.ics.icsoauth2server.http.APIResponse;
@@ -37,7 +38,7 @@ public class RestResponseExceptionHandler {
     }
 
 
-    @ExceptionHandler(value = {UnauthorizedUserException.class})
+    @ExceptionHandler(value = {UnauthorizedUserException.class, PermissionDeniedException.class})
     protected ResponseEntity<Object> handleUnauthorizedUserException(RuntimeException ex, HttpServletRequest request){
         list = new ArrayList<>();
         list.add(ex.getMessage());

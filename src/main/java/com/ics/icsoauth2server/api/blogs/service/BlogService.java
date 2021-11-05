@@ -20,6 +20,7 @@ public interface BlogService {
 
     ResponseEntity<APIResponse<BlogCreationResponse>> deletePost(String title, HttpServletRequest httpServletRequest, UserPrincipal principal);
 
+    ResponseEntity<APIResponse<BlogCreationResponse>> getPublishedPostByTitle(String title,HttpServletRequest httpServletRequest);
 
     Boolean existById(Long id, HttpServletRequest httpServletRequest);
 
