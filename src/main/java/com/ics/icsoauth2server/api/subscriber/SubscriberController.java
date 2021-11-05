@@ -2,12 +2,12 @@ package com.ics.icsoauth2server.api.subscriber;
 
 import com.ics.icsoauth2server.api.subscriber.service.SubscriberService;
 import com.ics.icsoauth2server.http.APIResponse;
+import com.ics.icsoauth2server.oauth2.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -36,6 +36,16 @@ public class SubscriberController {
         return subscriberService.save(request,httpServletRequest);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/all")
+    public ResponseEntity<APIResponse<SubscriberResponse>> getAll(@RequestParam(name = "sortBy",defaultValue = "",required = false) String sortBy,
+                                                                  @RequestParam(name = "sortOrder", defaultValue = "",required = false) String sortOrder,
+                                                                  @RequestParam(name = "currentPage",defaultValue = "1",required = false) Integer currentPage,
+                                                                  @RequestParam(name = "itemsPerPage",defaultValue = "1",required = false) Integer itemsPerPage,
+                                                                  HttpServletRequest httpServletRequest,
+                                                                  UserPrincipal principal){
+        return subscriberService.getAllSubscriber(sortBy,sortOrder,currentPage,itemsPerPage,httpServletRequest,principal);
+    }
 
 
 

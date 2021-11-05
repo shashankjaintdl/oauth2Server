@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static com.ics.icsoauth2server.helper.ConstantMessage.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,6 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class BlogController {
 
     protected final static String ENDPOINT = API_VERSION+"/blog";
+
     private final BlogService blogService;
 
     /**
@@ -94,7 +94,6 @@ public class BlogController {
                                                                     UserPrincipal principal){
         return blogService.deletePost(title,httpServletRequest,principal);
     }
-
 
     /**
      *

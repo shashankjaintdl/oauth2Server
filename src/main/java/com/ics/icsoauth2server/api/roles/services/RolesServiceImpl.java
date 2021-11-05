@@ -45,8 +45,8 @@ public class RolesServiceImpl implements RolesService{
 
     @PostConstruct
     public void postConstruct(){
-        System.out.println(rolesRepository.findById(1L));
-        System.out.println(rolesRepository.findAll());
+//        System.out.println(rolesRepository.findById(1L));
+//        System.out.println(rolesRepository.findAll());
     }
 
     @Override

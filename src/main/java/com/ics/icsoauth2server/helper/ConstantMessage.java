@@ -36,6 +36,8 @@ public class ConstantMessage {
      */
 
     public static final String SUBSCRIBE_SUCCESS = "Subscription successfully";
-    public static final String SUBSCRIBE_ERROR = "Error while submiting the subscription";
+    public static final String SUBSCRIBE_ERROR = "Error while submitting the subscription";
+    public static final String SUBSCRIBER_FETCH_ERROR = "Error while fetching the subscriber";
+
 
 }

@@ -19,7 +19,7 @@ public @Data  class Subscriber extends BaseEntity{
     @Column(name = "UUID",unique = true,updatable = false)
     private String UUID;
 
-    @Column(name = "email_id")
+    @Column(name = "email_id",unique = true)
     private String emailId;
 
     @Column(name = "first_name")

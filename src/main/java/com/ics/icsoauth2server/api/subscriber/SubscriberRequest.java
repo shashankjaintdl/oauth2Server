@@ -11,11 +11,6 @@ import static com.ics.icsoauth2server.helper.ConstraintValidationMessage.*;
 
 public @Data class SubscriberRequest {
 
-    @NotNull(message = UUID_NOT_NULL)
-    @NotEmpty(message = UUID_NOT_EMPTY)
-    @NotBlank(message = UUID_NOT_BLANK)
-    private String UUID;
-
     @NotNull(message = FIRST_NAME_NOT_NULL)
     @NotEmpty(message = FIRST_NAME_NOT_EMPTY)
     @NotBlank(message = FIRST_NAME_NOT_BLANK)
