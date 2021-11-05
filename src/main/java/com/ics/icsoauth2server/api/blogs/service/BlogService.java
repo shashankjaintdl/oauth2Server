@@ -22,6 +22,10 @@ public interface BlogService {
 
     ResponseEntity<APIResponse<BlogCreationResponse>> getPublishedPostByTitle(String title,HttpServletRequest httpServletRequest);
 
+    ResponseEntity<APIResponse<BlogCreationResponse>> getAllPublishedPost(String sortBy, String sortOrder, Integer currentPage, Integer itemPerPage,HttpServletRequest httpServletRequest);
+
+    ResponseEntity<APIResponse<BlogCreationResponse>> getAllUnPublishedPost(String sortBy, String sortOrder, Integer currentPage, Integer itemPerPage,HttpServletRequest httpServletRequest,UserPrincipal principal);
+
     Boolean existById(Long id, HttpServletRequest httpServletRequest);
 
     Boolean existByTopic(String question, HttpServletRequest httpServletRequest);

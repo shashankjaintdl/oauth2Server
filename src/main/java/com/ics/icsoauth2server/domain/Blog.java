@@ -34,15 +34,15 @@ public @Data class Blog extends BlogBaseEntity{
     private String UUID;
 
     @Column(name = "title",nullable = false,updatable = false)
-    @NotEmpty(message = BLOG_TOPIC_NOT_EMPTY)
-    @NotNull(message = BLOG_TOPIC_NOT_NULL)
-    @NotBlank(message = BLOG_TOPIC_NOT_BLANK)
+    @NotEmpty(message = POST_TITLE_NOT_EMPTY)
+    @NotNull(message = POST_TITLE_NOT_NULL)
+    @NotBlank(message = POST_TITLE_NOT_BLANK)
     private String title;
 
     @Lob
     @Column(name = "contents",nullable = false)
-    @NotEmpty(message = BLOG_CONTENT_NOT_EMPTY)
-    @NotNull(message = BLOG_CONTENT_NOT_NULL)
+    @NotEmpty(message = POST_CONTENT_NOT_EMPTY)
+    @NotNull(message = POST_CONTENT_NOT_NULL)
     private String contents;
 
     @Column(name = "tags")

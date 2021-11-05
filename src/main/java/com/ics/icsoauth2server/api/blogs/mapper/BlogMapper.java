@@ -3,6 +3,8 @@ package com.ics.icsoauth2server.api.blogs.mapper;
 import com.ics.icsoauth2server.api.blogs.BlogCreationResponse;
 import com.ics.icsoauth2server.domain.Blog;
 
+import java.util.List;
+
 public class BlogMapper {
 
     public BlogCreationResponse mapResponse(Blog blog){
@@ -20,5 +22,7 @@ public class BlogMapper {
         response.setTags(blog.getTags());
         return response;
     }
+
+  
 
 }
